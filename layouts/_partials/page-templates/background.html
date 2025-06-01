@@ -1,0 +1,54 @@
+{{ $disableImageOptimizationCover := .Page.Site.Params.disableImageOptimizationCover | default false }}
+
+{{ $isParentList := eq (.Scratch.Get "scope") "list" }}
+{{ $shouldBlur := $.Params.layoutBackgroundBlur | default (or
+	(and ($.Site.Params.article.layoutBackgroundBlur | default true) (not $isParentList))
+	(and ($.Site.Params.list.layoutBackgroundBlur | default true) ($isParentList))
+	)
+}}
+{{ $shouldAddHeaderSpace := $.Params.layoutBackgroundHeaderSpace | default (or
+	(and ($.Site.Params.article.layoutBackgroundHeaderSpace | default true) (not $isParentList))
+	(and ($.Site.Params.list.layoutBackgroundHeaderSpace | default true) ($isParentList))
+	)
+}}
+
+{{- $images := .Resources.ByType "image" -}}
+{{- $featured := $images.GetMatch "*background*" -}}
+{{- $featured := partial "functions/get-hero-image.html" (dict "context" . "imageObj" $featured) -}}
+
+{{ if $shouldAddHeaderSpace | default true }}
+	<div id="hero" class="h-[150px] md:h-[200px]"></div>
+{{ end }}
+
+{{ $processedImage := partial "functions/get-processed-image.html" (dict
+	"imageObj" $featured
+	"imageWidth" ($.Site.Params.backgroundImageWidth | default "1200")
+	"disableImageOptimizationCover" true
+	)
+}}
+
+{{ $imageURL := $processedImage.Permalink | safeHTMLAttr }}
+
+
+<div
+	class="fixed inset-x-0 top-0 h-[800px] single_hero_background nozoom"
+	style="background-image: url({{ $imageURL }});">
+	<div
+		class="absolute inset-0 bg-gradient-to-t from-neutral dark:from-neutral-900 to-transparent mix-blend-normal"></div>
+	<div
+		class="absolute inset-0 opacity-60 bg-gradient-to-t from-neutral dark:from-neutral-900 to-neutral-100 dark:to-neutral-800 mix-blend-normal"></div>
+</div>
+
+{{ if $shouldBlur | default false }}
+	<div
+		id="background-blur"
+		class="fixed opacity-0 inset-x-0 top-0 h-full single_hero_background nozoom backdrop-blur-2xl"></div>
+	<script>
+		window.addEventListener("scroll", function (e) {
+			var scroll =
+				window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+			var background_blur = document.getElementById("background-blur");
+			background_blur.style.opacity = scroll / 300;
+		});
+	</script>
+{{ end }}

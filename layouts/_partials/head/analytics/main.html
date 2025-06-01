@@ -1,0 +1,12 @@
+{{ with site.Params.fathomAnalytics.site }}
+	{{ partial "head/analytics/fathom.html" }}
+{{ end }}
+{{ with site.Config.Services.GoogleAnalytics.ID }}
+	{{ partial "head/analytics/ga.html" }}
+{{ end }}
+{{ with site.Params.umamiAnalytics.websiteid }}
+	{{ partial "head/analytics/umami.html" }}
+{{ end }}
+{{ with site.Params.selineAnalytics.token }}
+	{{ partial "head/analytics/seline.html" }}
+{{ end }}

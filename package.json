@@ -1,0 +1,65 @@
+{
+  "name": "hugo-blowfish-theme",
+  "version": "2.86.0",
+  "description": "Blowfish theme for Hugo.",
+  "scripts": {
+    "postinstall": "vendor-copy",
+    "assets": "rimraf assets/vendor && vendor-copy",
+    "build": "hugo --minify --source exampleSite --themesDir ../.. --baseURL https://nunocoracao.github.io/blowfish/",
+    "dev": "hugo server -DEF --source exampleSite --themesDir ../..",
+    "dev:core": "hugo server -DEF --source exampleSite --themesDir ../.. --renderSegments core",
+    "dev:production": "hugo server --minify --source exampleSite --themesDir ../.. -e production",
+    "dev:css": "NODE_ENV=development npx @tailwindcss/cli -c ./tailwind.config.js -i ./assets/css/main.css -o ./assets/css/compiled.css --jit -w",
+    "build:css": "NODE_ENV=production npx @tailwindcss/cli -c ./tailwind.config.js -i ./assets/css/main.css -o ./assets/css/compiled.css --jit",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "**/*": [
+      "prettier --write --list-different",
+      "pnpm biome lint --write --no-errors-on-unmatched"
+    ],
+    "content/*.md": [
+      "markdownlint-cli2 --fix '#node_modules' '#themes'"
+    ]
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@awmottaz/prettier-plugin-void-html": "^1.8.0",
+    "@tailwindcss/cli": "^4.1.7",
+    "@tailwindcss/typography": "^0.5.16",
+    "biome": "^0.3.3",
+    "fuse.js": "^7.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.0",
+    "lite-youtube-embed": "^0.3.3",
+    "prettier": "^3.5.3",
+    "prettier-plugin-go-template": "^0.0.15",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "rimraf": "^6.0.1",
+    "tailwind-scrollbar": "^4.0.2",
+    "tailwindcss": "^4.1.7",
+    "vendor-copy": "^3.0.1"
+  },
+  "vendorCopy": [],
+  "devVendorCopy": [
+    {
+      "from": "node_modules/fuse.js/dist/fuse.min.js",
+      "to": "assets/lib/fuse/fuse.min.js"
+    },
+    {
+      "from": "node_modules/lite-youtube-embed/src/lite-yt-embed.js",
+      "to": "assets/lib/lite-youtube-embed/lite-yt-embed.js"
+    },
+    {
+      "from": "node_modules/lite-youtube-embed/src/lite-yt-embed.css",
+      "to": "assets/lib/lite-youtube-embed/lite-yt-embed.css"
+    }
+  ],
+  "dependencies": {
+    "@headlessui/react": "^2.2.4",
+    "@heroicons/react": "^2.2.0",
+    "@iamtraction/google-translate": "^2.0.1",
+    "@tailwindcss/forms": "^0.5.10",
+    "commander": "^14.0.0"
+  }
+}

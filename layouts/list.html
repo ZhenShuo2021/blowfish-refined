@@ -1,0 +1,134 @@
+{{/* This template is used as a fallback for both section and taxonomy pages */}}
+{{/* Section page example: /docs/, /posts/ (.Kind == "section") */}}
+{{/* Taxonomy page example: /tags/, /categories/ (.Kind == "taxonomy") */}}
+
+{{/* You can override section pages with layouts/section.html or layouts/<section>/section.html */}}
+{{/* You can override term pages with layouts/term.html or layouts/<taxonomy>/term.html */}}
+{{/* This layouts/list.html acts as a fallback if more specific templates are not found */}}
+
+{{ define "main" }}
+	{{ .Scratch.Set "scope" "list" }}
+	{{ if .Site.Params.list.showHero | default false }}
+		{{ $heroStyle := print "page-templates/" .Site.Params.list.heroStyle ".html" }}
+		{{ partial $heroStyle . }}
+	{{- end -}}
+
+	{{ $toc := and (.Params.showTableOfContents | default (.Site.Params.list.showTableOfContents | default false)) (in
+		.TableOfContents "<ul")
+	}}
+	<header>
+		{{ if .Params.showBreadcrumbs | default (.Site.Params.list.showBreadcrumbs | default false) }}
+			{{ partial "ui/breadcrumbs.html" . }}
+		{{ end }}
+		<h1 class="mt-5 text-4xl font-extrabold text-neutral-900 dark:text-neutral">{{ .Title }}</h1>
+		<div class="mt-1 mb-2 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+			{{ partial "ui/article-meta.html" (dict "context" . "scope" "single") }}
+		</div>
+		{{ $translations := .AllTranslations }}
+		{{ with .File }}
+			{{ $path := .Path }}
+			{{ $jsPage := resources.Get "js/firebase-article-interactions.js" }}
+			{{ $jsPage = $jsPage | resources.Minify | resources.Fingerprint "sha256" }}
+			{{ range $translations }}
+				{{ $lang := print "."  .Lang  ".md" }}
+				{{ $path = replace $path $lang ".md" }}
+			{{ end }}
+			<script>
+				var oid = "views_{{ $path }}"
+				var oid_likes = "likes_{{ $path }}"
+			</script>
+			<script
+				type="text/javascript"
+				src="{{ $jsPage.RelPermalink }}"
+				integrity="{{ $jsPage.Data.Integrity }}"></script>
+		{{ end }}
+	</header>
+	{{ $isTOCEnabled := .Params.showTableOfContents | default (.Site.Params.article.showTableOfContents | default false) }}
+	{{ $hasTOCContent := in .TableOfContents "<ul" }}
+	{{ $shouldRenderTOC := and $isTOCEnabled $hasTOCContent }}
+	{{ $sidebarStickyTop := cond (hasPrefix .Site.Params.header.layout "fixed") "lg:top-[140px]" "lg:top-10" }}
+	{{ $tocWrapperClass := printf "toc ltr:pl-5 rtl:pr-5 lg:sticky %s" $sidebarStickyTop }}
+	{{ $sectionMarginTop := cond $shouldRenderTOC "mt-12" "mt-0" }}
+	<section class="{{ $sectionMarginTop }} prose flex max-w-full flex-col dark:prose-invert lg:flex-row">
+		{{ if $shouldRenderTOC }}
+			<div class="order-first px-0 lg:order-last lg:max-w-xs ltr:lg:pl-8 rtl:lg:pr-8">
+				<div class="{{ $tocWrapperClass }}">
+					{{ partial "toc.html" . }}
+				</div>
+			</div>
+		{{ end }}
+		<div class="min-w-0 min-h-0 max-w-prose">
+			{{ .Content }}
+		</div>
+	</section>
+	{{ if gt .Pages 0 }}
+		{{ $cardView := .Params.cardView | default (.Site.Params.list.cardView | default false) }}
+		{{ $groupByYear := .Params.groupByYear | default ($.Site.Params.list.groupByYear | default false) }}
+		{{ $orderByWeight := .Params.orderByWeight | default ($.Site.Params.list.orderByWeight | default false) }}
+		{{ $groupByYear := and (not $orderByWeight) $groupByYear }}
+
+		{{ if not $cardView }}
+
+			<section class="space-y-10 w-full">
+				{{ if not $orderByWeight }}
+					{{ range (.Paginate (.Pages.GroupByDate "2006")).PageGroups }}
+						{{ if $groupByYear }}
+							<h2
+								class="mt-12 text-2xl font-bold text-neutral-700 first:mt-8 dark:text-neutral-300">
+								{{ .Key }}
+							</h2>
+						{{ end }}
+						{{ range .Pages }}
+							{{ partial "ui/article-view/list.html" . }}
+						{{ end }}
+					{{ end }}
+				{{ else }}
+					{{ range (.Paginate (.Pages.ByWeight)).Pages }}
+						{{ partial "ui/article-view/list.html" . }}
+					{{ end }}
+				{{ end }}
+			</section>
+		{{ else }}
+
+			{{ if $groupByYear }}
+
+				{{ range (.Paginate (.Pages.GroupByDate "2006")).PageGroups }}
+					<h2 class="mt-12 mb-3 text-2xl font-bold text-neutral-700 first:mt-8 dark:text-neutral-300">
+						{{ .Key }}
+					</h2>
+					<section class="w-full grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+						{{ range .Pages }}
+							{{ partial "ui/article-view/card.html" . }}
+						{{ end }}
+					</section>
+				{{ end }}
+
+			{{ else }}
+
+				<section class="w-full grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+					{{ if not $orderByWeight }}
+						{{ range (.Paginate (.Pages.GroupByDate "2006")).PageGroups }}
+							{{ range .Pages }}
+								{{ partial "ui/article-view/card.html" . }}
+							{{ end }}
+						{{ end }}
+					{{ else }}
+						{{ range (.Paginate (.Pages.ByWeight)).Pages }}
+							{{ partial "ui/article-view/card.html" . }}
+						{{ end }}
+					{{ end }}
+				</section>
+			{{ end }}
+
+		{{ end }}
+
+	{{ else }}
+		<section class="mt-10 prose dark:prose-invert">
+			<p class="py-8 border-t">
+				<em>{{ i18n "list.no_articles" | emojify }}</em>
+			</p>
+		</section>
+	{{ end }}
+
+	{{ partial "pagination.html" . }}
+{{ end }}

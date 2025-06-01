@@ -1,0 +1,43 @@
+{{ $url := .Get "url" }}
+{{ $lang := .Get "lang" }}
+{{ $lineParam := .Get "line" | default "1-" }}
+{{ $startLine := 0 }}
+{{ $endLine := -1 }}
+
+{{ if not $lang }}
+	{{ $ext := path.Ext $url }}
+	{{ $lang = lower (replace $ext "." "") }}
+{{ end }}
+
+{{ if findRE `^\d+$` $lineParam }}
+	{{ $startLine = sub (int $lineParam) 1 }}
+{{ else if findRE `^-\d+$` $lineParam }}
+	{{ $endLine = int (replace $lineParam "-" "" ) }}
+{{ else if findRE `^\d+-$` $lineParam }}
+	{{ $startLine = sub (int (replace $lineParam "-" "" )) 1 }}
+{{ else if findRE `^\d+-\d+$` $lineParam }}
+	{{ $parts := split $lineParam "-" }}
+	{{ $startLine = sub (int (index $parts 0)) 1 }}
+	{{ $endLine = int (index $parts 1) }}
+{{ end }}
+
+{{ with resources.GetRemote (urls.Parse $url) }}
+	{{ $lines := split .Content "\n" }}
+	{{ $totalLine := len $lines }}
+
+	{{ if eq $endLine -1 }}
+		{{ $endLine = $totalLine }}
+	{{ else }}
+		{{ $endLine = math.Min $endLine $totalLine }}
+	{{ end }}
+
+	{{ if gt $startLine $endLine }}
+		{{ errorf "Code Importer Shortcode - startLine is greater than endLine" . }}
+	{{ end }}
+
+	{{ $selected := first $endLine $lines }}
+	{{ $selected = after $startLine $selected }}
+	{{ printf "```%s\n%s\n```" $lang (delimit $selected "\n") | markdownify }}
+{{ else }}
+	{{ errorf "Code Importer Shortcode - Unable to get remote resource" . }}
+{{ end }}

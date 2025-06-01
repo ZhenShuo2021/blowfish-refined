@@ -1,0 +1,12 @@
+{{- $url := .url -}}
+{{- $resource := false -}}
+
+{{- if $url -}}
+	{{- if or (strings.HasPrefix $url "http:") (strings.HasPrefix $url "https:") -}}
+		{{- $resource = resources.GetRemote $url -}}
+	{{- else -}}
+		{{- $resource = resources.Get $url -}}
+	{{- end -}}
+{{- end -}}
+
+{{- return $resource -}}

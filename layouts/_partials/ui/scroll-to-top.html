@@ -1,0 +1,88 @@
+<button
+	id="back-to-top"
+	class="fixed right-6 bottom-6 w-12 h-12 rounded-full flex items-center justify-center bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-400 dark:hover:bg-neutral-500"
+	aria-label="{{ i18n "nav.scroll_to_top_title" }}"
+	title="{{ i18n "nav.scroll_to_top_title" }}">
+	{{ partial "ui/icon.html" (dict "icon" "chevron-up" "class" "w-8 h-8 text-[#6d6e70] dark:text-[#b0b3b8]") }}
+</button>
+<script>
+	(function () {
+		const SCROLL_THRESHOLD = 300;
+		const backToTopButton = document.getElementById("back-to-top");
+
+		if (!backToTopButton) {
+			console.warn("Back to top button not found");
+			return;
+		}
+
+		let lastScrollY = window.pageYOffset;
+		let isVisible = false;
+		backToTopButton.style.opacity = "0";
+		backToTopButton.style.visibility = "hidden";
+		backToTopButton.style.transform = "scale(0.8)";
+		backToTopButton.style.transition = "opacity 0.15s ease, visibility 0.15s ease, transform 0.15s ease";
+
+		function smoothScrollToTop() {
+			window.scrollTo({
+				top: 0,
+				behavior: "smooth",
+			});
+		}
+
+		function showButton() {
+			if (!isVisible) {
+				isVisible = true;
+				backToTopButton.style.opacity = "1";
+				backToTopButton.style.visibility = "visible";
+				backToTopButton.style.transform = "scale(1)";
+			}
+		}
+
+		function hideButton() {
+			if (isVisible) {
+				isVisible = false;
+				backToTopButton.style.opacity = "0";
+				backToTopButton.style.visibility = "hidden";
+				backToTopButton.style.transform = "scale(0.8)";
+			}
+		}
+
+		function handleScroll() {
+			const currentScrollY = window.pageYOffset;
+
+			if (currentScrollY < SCROLL_THRESHOLD) {
+				hideButton();
+			} else {
+				if (currentScrollY < lastScrollY) {
+					showButton();
+				} else {
+					hideButton();
+				}
+			}
+
+			lastScrollY = currentScrollY;
+		}
+
+		function throttle(func, limit) {
+			let inThrottle;
+			return function () {
+				const args = arguments;
+				const context = this;
+				if (!inThrottle) {
+					func.apply(context, args);
+					inThrottle = true;
+					setTimeout(() => (inThrottle = false), limit);
+				}
+			};
+		}
+
+		const throttledHandleScroll = throttle(handleScroll, 100);
+		window.addEventListener("scroll", throttledHandleScroll, { passive: true });
+
+		backToTopButton.addEventListener("click", function (e) {
+			e.preventDefault();
+			smoothScrollToTop();
+		});
+		handleScroll();
+	})();
+</script>

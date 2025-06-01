@@ -1,0 +1,15 @@
+{{- $url := .Destination -}}
+{{- $isExternal := partial "functions/is-external.html" $url -}}
+{{- $isImage := in (.Text | safeHTML) "<img" -}}
+{{- $addSVG := and $isExternal (not $isImage) site.Params.externalLinkIcon }}
+<a
+	href="{{ $url }}"
+	{{ if $isExternal }}target="_blank" rel="noopener noreferrer"{{ end }}
+	style="display:inline-flex; align-items:center; gap:0.2em;">
+	{{ .Text | safeHTML }}
+	{{- if $addSVG -}}
+		{{- $svg := site.Store.Get "externalLinkSVG" -}}
+		{{- $svg -}}
+	{{- end -}}
+</a>
+{{- /* Trim EOF   */ -}}

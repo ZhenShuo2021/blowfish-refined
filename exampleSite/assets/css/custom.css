@@ -1,0 +1,151 @@
+/* Custom css */
+/* You can add or remove anything here */
+
+:root {
+	/* Override the color scheme */
+	--color-neutral-800: 52, 50, 50;
+}
+
+/* ---------------------------------------------- */
+/*                   Logo size                    */
+/* ---------------------------------------------- */
+.logo svg {
+	width: 3rem;
+	height: 3rem;
+}
+
+img.logo {
+	max-height: 4rem;
+	max-width: 4rem;
+}
+
+/* ---------------------------------------------- */
+/*         Customize font size of title           */
+/* ---------------------------------------------- */
+:root {
+	--scale-ratio: 1.2;
+	--base-size: 1rem;
+}
+
+h6 {
+	font-size: var(--base-size);
+}
+h5 {
+	font-size: calc(var(--base-size) * var(--scale-ratio));
+}
+h4 {
+	font-size: calc(var(--base-size) * pow(var(--scale-ratio), 2));
+}
+h3 {
+	font-size: calc(var(--base-size) * pow(var(--scale-ratio), 3));
+}
+h2 {
+	font-size: calc(var(--base-size) * pow(var(--scale-ratio), 4));
+}
+h1 {
+	font-size: calc(var(--base-size) * pow(var(--scale-ratio), 5));
+}
+
+/* ---------------------------------------------- */
+/*          Customize the button color            */
+/* ---------------------------------------------- */
+#back-to-top {
+	background-color: #ecedf0;
+}
+#back-to-top:hover {
+	background-color: #dadde1;
+}
+.dark #back-to-top {
+	background-color: #626a74;
+}
+.dark #back-to-top:hover {
+	background-color: #717883;
+}
+
+/* ---------------------------------------------- */
+/*    Disable the display of the ToC scrollbar    */
+/* ---------------------------------------------- */
+#TOCView {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+#TOCView::-webkit-scrollbar {
+	display: none;
+}
+
+/* ---------------------------------------------- */
+/*                 Custom font                    */
+/* ---------------------------------------------- */
+/* Please uncomment the lines below and in layouts/_partials/extend-head.html */
+/* html,
+body {
+	font-family: "LXGW WenKai TC", serif, system-ui;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+} */
+
+/* ---------------------------------------------- */
+/*        Customize article hover style           */
+/* ---------------------------------------------- */
+.article-title {
+	text-decoration: none;
+	display: inline-block;
+	text-decoration: underline;
+	text-decoration-color: rgba(0, 0, 0, 0);
+	text-decoration-thickness: 2.5px;
+	text-underline-offset: 0.35em;
+	transition:
+		text-decoration-color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+		text-underline-offset 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.article-title:hover {
+	text-decoration-color: rgba(var(--color-primary-500), 1);
+	text-underline-offset: 0.22em;
+}
+
+.dark .article-title:hover {
+	text-decoration-color: rgba(var(--color-primary-400), 1);
+}
+
+/* ---------------------------------------------- */
+/*            Customize link hover style          */
+/* ---------------------------------------------- */
+.article-content a {
+	text-decoration: underline;
+	text-decoration-skip-ink: none;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 2px;
+	text-decoration-color: rgba(var(--color-primary-900), 0.6);
+	color: rgba(var(--color-primary-900), 1);
+}
+
+.article-content a:hover {
+	text-decoration-color: rgba(var(--color-primary-600), 1);
+	color: rgba(var(--color-primary-600), 1);
+}
+
+.dark .article-content a {
+	text-decoration-color: rgba(var(--color-primary-400), 1);
+	color: rgba(var(--color-primary-400), 1);
+}
+
+.dark .article-content a:hover {
+	text-decoration-color: rgba(var(--color-primary-300), 1);
+	color: rgba(var(--color-primary-300), 1);
+}
+
+/* ---------------------------------------------- */
+/*                Code block                      */
+/* ---------------------------------------------- */
+
+/* Fix chrome line number confliction */
+.chroma .ln {
+	color: #b1b5bb !important;
+}
+
+/* Fix chrome code error misidentify */
+.chroma .err {
+	color: unset !important;
+	background-color: unset !important;
+}

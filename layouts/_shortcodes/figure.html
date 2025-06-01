@@ -1,0 +1,105 @@
+{{ $disableImageOptimization := .Site.Params.disableImageOptimization | default false }}
+{{ $parsedSrc := urls.Parse (.Get "src") }}
+{{ $src := $parsedSrc.String }}
+{{ $alt := .Get "alt" }}
+{{ $width := .Get "width" }}
+{{ $height := .Get "height" }}
+{{ $loading := .Get "loading" }}
+{{ $class := .Get "class" }}
+{{ $link := .Get "link" }}
+{{ $target := .Get "target" }}
+{{ $rel := .Get "rel" }}
+{{ $title := .Get "title" }}
+{{ $caption := .Get "caption" }}
+{{ $attr := .Get "attr" }}
+{{ $attrlink := .Get "attrlink" }}
+
+{{ $resource := "" }}
+{{ if not $parsedSrc.IsAbs }}
+  {{ with or (.Page.Resources.GetMatch $parsedSrc.Path) (resources.GetMatch $parsedSrc.Path) }}
+    {{ $resource = . }}
+  {{ end }}
+{{ end }}
+
+<figure {{ with $class }} class="{{ . }}"{{ end }}>
+  {{ if $link }}
+    <a href="{{ $link }}"{{ with $target }} target="{{ . }}"{{ end }}{{ with $rel }} rel="{{ . }}"{{ end }}>
+  {{ end }}
+
+  {{ template "image" dict
+    "resource" $resource
+    "src" $src
+    "alt" $alt
+    "width" $width
+    "height" $height
+    "loading" $loading
+    "link" $link
+    "disableImageOptimization" $disableImageOptimization
+  }}
+
+  {{ if $link }}</a>{{ end }}
+
+  {{ if or (or $title $caption) $attr }}
+    <figcaption>
+      {{ with $title }}<h4>{{ . }}</h4>{{ end }}
+      {{ if or $caption $attr }}<p>
+        {{ $caption | markdownify }}
+        {{ with $attrlink }}<a href="{{ . }}">{{ end }}
+        {{ $attr | markdownify }}
+        {{ if $attrlink }}</a>{{ end }}
+      </p>{{ end }}
+    </figcaption>
+  {{ end }}
+</figure>
+
+{{ define "image" }}
+  {{ $resource := .resource }}
+  {{ $src := .src }}
+  {{ $alt := .alt }}
+  {{ $width := .width }}
+  {{ $height := .height }}
+  {{ $loading := .loading }}
+  {{ $link := .link }}
+  {{ $disableImageOptimization := .disableImageOptimization }}
+
+  {{ if $resource }}
+    {{ if or $disableImageOptimization (eq $resource.MediaType.SubType "svg") }}
+      <img
+        class="my-0 rounded-md{{ if $link }} nozoom{{ end }}"
+        src="{{ $resource.RelPermalink }}"
+        alt="{{ $alt }}"
+        {{ with $width }}width="{{ . }}"{{ end }}
+        {{ with $height }}height="{{ . }}"{{ end }}
+        {{ with $loading }}loading="{{ . }}"{{ end }}
+      >
+    {{ else }}
+      <img
+        class="my-0 rounded-md{{ if $link }} nozoom{{ end }}"
+        loading="lazy"
+        decoding="async"
+        fetchpriority="low"
+        alt="{{ $alt }}"
+        srcset="
+          {{ ($resource.Resize "330x").RelPermalink }}  330w,
+          {{ ($resource.Resize "660x").RelPermalink }}  660w,
+          {{ ($resource.Resize "1280x").RelPermalink }} 1280w
+        "
+        {{ if not $link }}
+          data-zoom-src="{{ ($resource.Resize "1280x").RelPermalink }}"
+        {{ end }}
+        src="{{ ($resource.Resize "660x").RelPermalink }}"
+        {{ with $width }}width="{{ . }}"{{ end }}
+        {{ with $height }}height="{{ . }}"{{ end }}
+      >
+    {{ end }}
+  {{ else }}
+    <img
+      class="my-0 rounded-md{{ if $link }} nozoom{{ end }}"
+      src="{{ $src }}"
+      alt="{{ $alt }}"
+      {{ with $width }}width="{{ . }}"{{ end }}
+      {{ with $height }}height="{{ . }}"{{ end }}
+      {{ with $loading }}loading="{{ . }}"{{ end }}
+    >
+  {{ end }}
+{{ end }}

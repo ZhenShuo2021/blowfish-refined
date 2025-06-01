@@ -1,0 +1,77 @@
+{{ define "header/header-option-dropdown-mobile.html" }}
+	<li class="mt-1">
+		<a
+			href="{{ .URL }}"
+			class="flex items-center text-neutral-900 dark:text-neutral-100 hover:text-primary-600 dark:hover:text-primary-400">
+			{{ if .Pre }}
+				<span {{ if and .Pre .Name }}class="mr-1"{{ end }}>
+					{{ partial "ui/icon.html" .Pre }}
+				</span>
+			{{ end }}
+			<p class="text-bg font-bg" title="{{ .Title }}">
+				{{ .Name | markdownify }}
+			</p>
+			<span>
+				{{ partial "ui/icon.html" (dict "icon" "chevron-down") }}
+			</span>
+		</a>
+	</li>
+	{{ range .Children }}
+		<li class="mt-1">
+			{{- $isExternal := partial "functions/is-external.html" .URL -}}
+			<a
+				href="{{ .URL }}"
+				{{ if $isExternal }}
+					target="_blank"
+				{{ end }}
+				class="flex items-center text-neutral-900 dark:text-neutral-100 hover:text-primary-600 dark:hover:text-primary-400"
+				style="display:inline-flex; align-items:center; gap:0.2em;">
+				{{ if .Pre }}
+					<span {{ if and .Pre .Name }}class="mr-1"{{ end }}>
+						{{ partial "ui/icon.html" .Pre }}
+					</span>
+				{{ end }}
+				<p class="text-sm font-small" title="{{ .Title }}">
+					{{ .Name | markdownify }}
+				</p>
+				{{ if and $isExternal site.Params.externalLinkIcon (not .Pre) }}
+					{{- $svg := site.Store.Get "externalLinkSVG" -}}
+					{{- $svg -}}
+				{{ end }}
+			</a>
+		</li>
+	{{ end }}
+	<li class="mb-2"></li>
+{{ end }}
+
+{{ define "header/header-option-simple-mobile.html" }}
+	<li class="mt-1">
+		{{- $isExternal := partial "functions/is-external.html" .URL -}}
+		<a
+			href="{{ .URL }}"
+			{{ if $isExternal }}
+				target="_blank"
+			{{ end }}
+			class="flex items-center text-neutral-900 dark:text-neutral-100 hover:text-primary-600 dark:hover:text-primary-400"
+			style="display:inline-flex; align-items:center; gap:0.2em;">
+			{{ if .Pre }}
+				<div {{ if and .Pre .Name }}class="mr-2"{{ end }}>
+					{{ partial "ui/icon.html" (dict "icon" .Pre) }}
+				</div>
+			{{ end }}
+			<p class="text-bg font-bg" title="{{ .Title }}">
+				{{ .Name | markdownify }}
+			</p>
+			{{ if and $isExternal site.Params.externalLinkIcon (not .Pre) }}
+				{{- $svg := site.Store.Get "externalLinkSVG" -}}
+				{{- $svg -}}
+			{{ end }}
+		</a>
+	</li>
+{{ end }}
+
+{{ if .HasChildren }}
+	{{ template "header/header-option-dropdown-mobile.html" . }}
+{{ else }}
+	{{ template "header/header-option-simple-mobile.html" . }}
+{{ end }}

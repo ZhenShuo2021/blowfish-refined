@@ -1,0 +1,26 @@
+{{/* This is the custom home for document page. Override this file by creating */}}
+{{/* your own layouts/_partials/home-templates/custom.html */}}
+{{ $jsHome := resources.Get "js/home.js" | resources.Minify | resources.Fingerprint "sha256" }}
+<div id="background">
+	{{ partial "home-templates/background.html" . }}
+</div>
+<div id="canvas" style="display:none">
+	{{ partial "home-templates/canvas.html" . }}
+</div>
+<div id="profile" style="display:none">
+	{{ partial "home-templates/profile.html" . }}
+</div>
+<div id="card" style="display:none">
+	{{ partial "home-templates/card.html" . }}
+</div>
+<div id="page" style="display:none">
+	{{ partial "home-templates/page.html" . }}
+</div>
+<section>
+	{{ partial "home-templates/recent-articles/custom.html" . }}
+</section>
+<script
+	defer
+	type="text/javascript"
+	src="{{ $jsHome.RelPermalink }}"
+	integrity="{{ $jsHome.Data.Integrity }}"></script>

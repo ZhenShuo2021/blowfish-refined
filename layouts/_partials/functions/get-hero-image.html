@@ -1,0 +1,25 @@
+{{/* Returns the hero image resource with fallback logic.
+	Parameters:
+	.context             (required) Page context
+	.imageObj            (optional) Pre-existing image resource
+	.paramKey            (optional) Page param key for image (default: "featureimage")
+	.defaultImageParam   (optional) Site param key for default image (default: "defaultBackgroundImage")
+*/}}
+{{- $context := .context -}}
+{{- $imageObj := .imageObj -}}
+{{- $paramKey := .paramKey | default "featureimage" -}}
+{{- $defaultImageParam := .defaultImageParam | default "defaultBackgroundImage" -}}
+
+{{- if not $imageObj -}}
+	{{- with index $context.Params $paramKey -}}
+		{{- $imageObj = partial "functions/get-resource.html" (dict "url" .) -}}
+	{{- end -}}
+{{- end -}}
+
+{{- if not $imageObj -}}
+	{{- with index $context.Site.Params $defaultImageParam -}}
+		{{- $imageObj = partial "functions/get-resource.html" (dict "url" .) -}}
+	{{- end -}}
+{{- end -}}
+
+{{- return $imageObj -}}

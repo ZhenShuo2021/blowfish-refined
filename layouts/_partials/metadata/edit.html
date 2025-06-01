@@ -1,0 +1,15 @@
+{{ $url := .Params.editURL | default (.Site.Params.article.editURL | default "#") }}
+{{ $slash := "" }}
+<span class="mb-[2px]">
+	<a
+		href="{{ $url }}"
+		class="text-lg hover:text-primary-500"
+		rel="noopener noreferrer"
+		target="_blank"
+		title="{{ i18n "article.edit_title" }}"
+		><span class="inline-block align-text-bottom"
+			>{{ partial "ui/icon.html" (dict "icon" "edit") }}</span
+		></a
+	>
+</span>
+{{- /* Trim EOF */ -}}

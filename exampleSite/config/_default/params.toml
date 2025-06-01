@@ -1,0 +1,150 @@
+# -- Theme Options --
+# These options control how the theme functions and allow you to
+# customise the display of your website.
+#
+# Refer to the theme docs for more details about each of these parameters.
+# https://Blowfish.page/docs/configuration/#theme-parameters
+
+colorScheme = "blowfish"
+defaultAppearance = "dark" # valid options: light or dark
+autoSwitchAppearance = true
+
+enableSearch = true
+enableCodeCopy = true
+
+replyByEmail = false
+
+mainSections = ["docs", "samples"]
+# robots = ""
+
+disableImageOptimization = false
+disableImageOptimizationMD = false
+disableImageOptimizationCover = true
+disableTextInHeader = false
+# backgroundImageWidth = 1200
+
+defaultBackgroundImage = "/img/lagerstroemia-ap33.jpg"
+defaultFeaturedImage = "/img/lagerstroemia-ryan-lee.jpg"
+defaultSocialImage = "/img/lagerstroemia-ryan-lee.jpg"
+
+menuHighlight = true
+tocHighlight = true
+tocAutoCollapse = false
+tocAutoScroll = true
+externalLinkIcon = true
+
+# giteaDefaultServer = "https://git.fsfe.org"
+useKatex = false
+
+[header]
+  layout = "fixed" # valid options: basic, fixed, fixed-fill
+
+[footer]
+  showMenu = true
+  showCopyright = true
+  showThemeAttribution = true
+  showAppearanceSwitcher = true
+  showScrollToTop = true
+
+[homepage]
+  layout = "custom" # valid options: page, profile, canvas, card, background, custom
+  # homepageImage = "/img/iceland.jpg" # used in: canvas, and card
+  showRecent = false
+  showRecentItems = 6
+  showMoreLink = true
+  showMoreLinkDest = "more-articles"
+  cardView = true
+  layoutBackgroundBlur = true # only used when layout equals background
+
+[article]
+  showDate = false
+  showViews = false
+  showLikes = false
+  showDateOnlyInArticle = false
+  showDateUpdated = false
+  showAuthor = true
+  # showAuthorBottom = false
+  showHero = true
+  heroStyle = "background" # valid options: big, background
+  layoutBackgroundBlur = true # only used when heroStyle equals background
+  layoutBackgroundHeaderSpace = true # only used when heroStyle equals background
+  showBreadcrumbs = true
+  showDraftLabel = true
+  showEdit = true
+  editURL = "https://github.com/nunocoracao/blowfish/tree/main/exampleSite/content"
+  seriesOpened = false
+  showHeadingAnchors = true
+  showPagination = true
+  invertPagination = false
+  showReadingTime = true
+  showTableOfContents = true
+  showRelatedContent = true
+  relatedContentLimit = 6
+  showTaxonomies = true
+  showAuthorsBadges = true
+  showWordCount = false
+  sharingLinks = [ "linkedin", "twitter", "bluesky", "reddit", "whatsapp", "telegram", "pinterest", "facebook", "email"]
+  showZenMode = true
+
+[list]
+  showHero = true
+  heroStyle = "background" # valid options: basic, big, background
+  layoutBackgroundBlur = true # only used when heroStyle equals background
+  layoutBackgroundHeaderSpace = false
+  showBreadcrumbs = false
+  showSummary = false
+  showViews = false
+  showLikes = false
+  showTableOfContents = true
+  showCards = true
+  orderByWeight = true
+  groupByYear = false
+  cardView = true
+  constrainItemsWidth = false
+
+[sitemap]
+  excludedKinds = ["taxonomy", "term"]
+
+[term]
+  showHero = true
+  heroStyle = "big" # valid options: basic, big, background
+  showBreadcrumbs = false
+  showViews = false
+  showLikes = false
+  showTableOfContents = true
+  groupByYear = false
+  cardView = true
+
+[firebase]
+  #apiKey = "AIzaSyB5tqlqDky77Vb4Tc4apiHV4hRZI18KGiY"
+  #authDomain = "Blowfish-21fff.firebaseapp.com"
+  #projectId = "Blowfish-21fff"
+  #storageBucket = "Blowfish-21fff.appspot.com"
+  #messagingSenderId = "60108104191"
+  #appId = "1:60108104191:web:039842ebe1370698b487ca"
+  #measurementId = "G-PEDMYR1V0K"
+
+[fathomAnalytics]
+  # site = "ABC12345"
+  # domain = "llama.yoursite.com"
+
+[umamiAnalytics]
+  # websiteid = "ABC12345"
+  # domain = "llama.yoursite.com"
+  # dataDomains = "yoursite.com,yoursite2.com"
+  # scriptName = ""
+  # enableTrackEvent = false
+
+[selineAnalytics]
+  # token = "XXXXXX"
+  # enableTrackEvent = false
+
+[verification]
+  # google = ""
+  # bing = ""
+  # pinterest = ""
+  # yandex = ""
+
+[rssnext]
+  # feedId = ""
+  # userId = ""

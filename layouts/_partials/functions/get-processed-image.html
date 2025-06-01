@@ -1,0 +1,24 @@
+{{/* Returns the processed image (optimized by .Resize function).
+	Parameters:
+	.imageObj    (required) Hugo image resource object
+	.imgWidth    (optional) Width to resize the image to (default: "1200")
+	.disableImageOptimizationCover  (optional) Boolean; if true, skips image optimization
+*/}}
+{{ $imageObj := .imageObj }}
+{{ $imageWidth := .imageWidth | default "1200" }}
+{{ $disableImageOptimizationCover := .disableImageOptimizationCover }}
+
+{{ $result := $imageObj }}
+
+{{ if $disableImageOptimizationCover -}}
+	{{/* Do nothing */}}
+{{ else if strings.HasSuffix $imageObj ".svg" -}}
+	{{/* Do nothing */}}
+{{ else }}
+	{{/* Optimize image */}}
+	{{ with $imageObj.Resize (print 100 "x") -}}
+		{{ $result = . }}
+	{{ end -}}
+{{ end -}}
+
+{{ return $result }}
