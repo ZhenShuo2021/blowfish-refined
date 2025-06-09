@@ -56,6 +56,7 @@ git submodule add https://github.com/ZhenShuo2021/blowfish-refined.git themes/bl
   - [Zero-Coupling Architecture](#zero-coupling-architecture)
   - [Addressing Code Quality Issues](#addressing-code-quality-issues)
   - [Optimizing CSS Implementation](#optimizing-css-implementation)
+  - [Separating Core Styles from Enhancements](#separating-core-styles-from-enhancements)
 
 ## Addressing Tailwind CSS Limitations
 
@@ -372,6 +373,14 @@ Code optimization results in significant size reduction:
 - Compiled CSS: ~4900 lines → Refined: ~3600 lines
 
 This reduction comes from eliminating redundancy and focusing on essential styling without sacrificing functionality.
+
+### Separating Core Styles from Enhancements
+
+The refined version adopts a clear separation between core functionality and optional enhancements. The base theme provides essential styling only, while visual improvements and polished effects are implemented separately in `exampleSite/custom.css`.
+
+This architectural approach offers users maximum flexibility:
+
+Users seeking the enhanced appearance showcased in the demo site can retain the custom styles without any additional setup—achieving identical visual results immediately. Those preferring minimal styling can simply remove or ignore the custom CSS file, maintaining clean, lightweight styling.
 
 ## Attribution
 
