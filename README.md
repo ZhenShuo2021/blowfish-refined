@@ -2,7 +2,7 @@
 
 This project is a major improvement of the popular [Blowfish](https://github.com/nunocoracao/blowfish) Hugo theme. While based on Blowfish's solid foundation, working with it showed some architectural issues that inspired me to try different solutions.
 
-As I delved deeper into the modifications, I found that Hugo themes utilizing Tailwind CSS face inherent architectural limitations—a structural challenge that affects the user experience. You can see my detailed discussion in [this article](https://dev.to/zhenshuo2021/tailwind-css-in-hugo-is-a-scam-2b5e). Since these core architectural problems cannot be resolved, I have made my modifications available as a public template for community use.
+As I explored the modifications further, I discovered that Hugo themes using Tailwind CSS face inherent architectural limitations—structural issues that remain unsolvable as long as Tailwind is used within the Hugo framework. I've outlined the details in [this article](https://dev.to/zhenshuo2021/tailwind-css-in-hugo-is-a-scam-2b5e). To preserve my work, I've published my modifications as a public template.
 
 This refined version builds upon Blowfish v2.86.0 (2025/06).
 
@@ -16,11 +16,46 @@ pnpm install
 pnpm run dev
 ```
 
-or install the theme:
+Or install the theme:
 
 ```sh
 git submodule add https://github.com/ZhenShuo2021/blowfish-refined.git themes/blowfish-refined
 ```
+
+## Sections
+
+- [Addressing Tailwind CSS Limitations](#addressing-tailwind-css-limitations)
+- [Resolving Configuration Problems](#resolving-configuration-problems)
+  - [Addressing Naming Ambiguities](#addressing-naming-ambiguities)
+  - [Implementing Explicit Error Handling](#addressing-naming-ambiguities)
+  - [Simplifying Image Configuration](#simplifying-image-configuration)
+- [Focusing on Core Features](#focusing-on-core-features)
+- [Reducing Repository Size](#reducing-repository-size)
+- [Removing jQuery Dependency](#removing-jquery-dependency)
+- [Adopting CDN-First Architecture](#adopting-cdn-first-architecture)
+- [Fixing Show More Section Coverage](#fixing-show-more-section-coverage)
+- [Improving Syntax Highlighting](#improving-syntax-highlighting)
+- [Enhancing Markdown Portability](#enhancing-markdown-portability)
+- [Better HTML Structure](#better-html-structure)
+  - [Improving Semantic Markup](#improving-semantic-markup)
+  - [Adding External Link Indicators](#adding-external-link-indicators)
+- [Improving Shortcode Implementation](#improving-shortcode-implementation)
+  - [Slide Shortcode Enhancement](#slide-shortcode-enhancement)
+  - [Hint Shortcode](#hint-shortcode)
+- [Addressing Documentation Problems (mostly not done)](#addressing-documentation-problems-mostly-not-done)
+  - [Performance Considerations](#performance-considerations)
+  - [Installation Process](#installation-process)
+  - [Configuration Setup](#configuration-setup)
+  - [Content Organization Observations](#content-organization-observations)
+  - [Technical Section Clarity](#technical-section-clarity)
+  - [Structural Flow](#structural-flow)
+  - [Design System Considerations](#design-system-considerations)
+- [Implementing Complete Architectural Refactor](#implementing-complete-architectural-refactor)
+  - [Establishing Clear Code Organization](#establishing-clear-code-organization)
+  - [Migrating to New Hugo Architecture](#migrating-to-new-hugo-architecture)
+  - [Zero-Coupling Architecture](#zero-coupling-architecture)
+  - [Addressing Code Quality Issues](#addressing-code-quality-issues)
+  - [Optimizing CSS Implementation](#optimizing-css-implementation)
 
 ## Addressing Tailwind CSS Limitations
 
@@ -50,7 +85,7 @@ The original theme accepts multiple keywords (`*feature*`, `*background*`, `*cov
 
 The refined version standardizes on `*feature*` exclusively, simplifying the decision-making process while maintaining full functionality.
 
-### Focusing on Core Features
+## Focusing on Core Features
 
 Through observation of community usage patterns, I identified numerous features and shortcodes that see limited adoption. Features like the `thumbAndBackground` layout show minimal usage, while specialized shortcodes such as `gitea` and `forgejo` serve very specific use cases that can increase cognitive load for new users.
 
